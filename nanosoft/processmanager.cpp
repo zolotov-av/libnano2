@@ -11,6 +11,8 @@
 
 /**
 * Форкнуть процесс и включить потомка под контроль
+* Функция callback будет автоматически вызвана при его завершении
+* data — указатель на пользовательские данные
 */
 pid_t ProcessManager::fork(exit_callback_t callback, ptr<Object> data)
 {
@@ -43,7 +45,7 @@ pid_t ProcessManager::exec(std::string path, const EasyVector &args, const EasyR
 	pid_t pid = this->fork(callback, data);
 	if ( pid == 0 )
 	{
-		//::close(epoll);
+		close_on_exec();
 		int r = easyExec(path, args, env);
 		if ( r == -1 )
 		{
@@ -143,8 +145,8 @@ void ProcessManager::onProcessTimer()
 }
 
 /**
- * Тщательно проверить существование процесса
- */
+* Тщательно проверить существование процесса
+*/
 bool ProcessManager::processExists(pid_t pid, std::string command) {
 	// Тривиальные случаи
 	if(pid == 0) return false;
