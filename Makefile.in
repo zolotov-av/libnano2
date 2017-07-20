@@ -34,10 +34,19 @@ DEB_ARCH:=@DEB_ARCH@
 # через одноименную переменную окружения и они появятся здесь
 CXXFLAGS=@CXXFLAGS@
 
+# configure может снабдить нас дополнительными опциями компилятора
+# так же мы можем передавать свои опции компилятора в configure
+# через одноименную переменную окружения и они появятся здесь
+LDFLAGS=@LDFLAGS@
+
 # берем имя компилятора, которое дает нам configure и доплняем его опциями
 CXX:=@CXX@ $(CXXFLAGS) -ffunction-sections -I.
 
+# компоновщик
 LD=@CXX@ -Wl,--gc-sections
+
+# компилятор для тестовых программ
+CTEST=@CXX@ -Wl,--gc-sections
 
 LIBS=-lstdc++
 
@@ -94,17 +103,20 @@ TESTS+=test03_globaltimer
 # первая цель - главная, она будет запускаться когда цель явно не указана
 all: libnano2.a
 
+.PHONY: full
+full: libnano2.a test deb
+
 .PHONY: test
 test: $(TESTS)
 
 test01_blockspool: libnano2.a test01_blockspool.cpp
-	gcc -o test01_blockspool test01_blockspool.cpp -L. -I. -lstdc++ -lnano2
+	$(CTEST) -o test01_blockspool test01_blockspool.cpp -L. -I. -lstdc++ -lnano2
 	
 test02_bufferstream: libnano2.a test02_bufferstream.cpp
-	gcc -o test02_bufferstream test02_bufferstream.cpp -L. -I. -lstdc++ -lnano2
+	$(CTEST) -o test02_bufferstream test02_bufferstream.cpp -L. -I. -lstdc++ -lnano2
 
 test03_globaltimer: libnano2.a test03_globaltimer.cpp
-	gcc -o test03_globaltimer test03_globaltimer.cpp -L. -I. -lstdc++ -lnano2 -ludns
+	$(CTEST) -o test03_globaltimer test03_globaltimer.cpp -L. -I. -lstdc++ -lnano2 -ludns
 
 # установка файлов
 # примечение: будем отходить от этой практике, рекомендуется создавать пакет
