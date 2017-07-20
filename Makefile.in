@@ -1,0 +1,240 @@
+
+############################ AUTOCONF VARS ###################################
+
+# архитектура на которой будет происходить компиляция
+BUILD_SYSTEM:=@build@
+BUILD_CPU:=@build_cpu@
+BUILD_VENDOR:=@build_vendor@
+BUILD_OS:=@build_os@
+
+# архитектура на которой будут запускаться скомпилированные программы
+HOST_SYSTEM:=@host@
+HOST_CPU:=@host_cpu@
+HOST_VENDOR:=@host_vendor@
+HOST_OS:=@host_os@
+
+# целевая архитектура компилируемого компилятора
+#
+# Пояснение: это нужно для компиляции компиляторов, в частности самого gcc,
+#   задает архитектуру, для которой будущий (компилируемый) компилятор
+#   будет компилировать программы. В большинстве проектов не требуется.
+TARGET_SYSTEM:=@target@
+TARGET_CPU:=@target_cpu@
+TARGET_VENDOR:=@target_vendor@
+TARGET_OS:=@target_os@
+
+# архитектура для которой будет собираться deb-пакет.
+# сборщик пакетов и компилятор имеют разную терминлогию,
+# в скрипте configure мы транслируем HOST_CPU в имя архитектуры которую
+# ожидает менеджер пакетов
+DEB_ARCH:=@DEB_ARCH@
+
+# configure может снабдить нас дополнительными опциями компилятора
+# так же мы можем передавать свои опции компилятора в configure
+# через одноименную переменную окружения и они появятся здесь
+CXXFLAGS=@CXXFLAGS@
+
+# берем имя компилятора, которое дает нам configure и доплняем его опциями
+CXX:=@CXX@ $(CXXFLAGS) -ffunction-sections -I.
+
+LD=@CXX@ -Wl,--gc-sections
+
+LIBS=-lstdc++
+
+# можно сделать по аналогии с $(CXX)
+AR:=ar
+RANLIB:=ranlib
+
+############################### VARS #########################################
+
+# Имя файла deb-пакета
+DEB_FILENAME=libnano2-$(DEB_ARCH).deb
+
+LIBOBJECTS+=obj/asyncagent.o
+LIBOBJECTS+=obj/asyncdns.o
+LIBOBJECTS+=obj/asyncobject.o
+LIBOBJECTS+=obj/asyncserver.o
+LIBOBJECTS+=obj/asyncstream.o
+LIBOBJECTS+=obj/asyncudpserver.o
+LIBOBJECTS+=obj/asyncxmlstream.o
+LIBOBJECTS+=obj/blockspool.o
+LIBOBJECTS+=obj/debug.o
+LIBOBJECTS+=obj/easylib.o
+LIBOBJECTS+=obj/easymysql.o
+LIBOBJECTS+=obj/easylist.o
+LIBOBJECTS+=obj/easyresultset.o
+LIBOBJECTS+=obj/easyrow.o
+LIBOBJECTS+=obj/easyvector.o
+LIBOBJECTS+=obj/error.o
+LIBOBJECTS+=obj/logger.o
+LIBOBJECTS+=obj/netdaemon.o
+LIBOBJECTS+=obj/object.o
+LIBOBJECTS+=obj/processmanager.o
+LIBOBJECTS+=obj/tagbuilder.o
+LIBOBJECTS+=obj/taghelper.o
+LIBOBJECTS+=obj/tempstring.o
+LIBOBJECTS+=obj/xml_tag.o
+LIBOBJECTS+=obj/xml_types.o
+LIBOBJECTS+=obj/xmlparser.o
+LIBOBJECTS+=obj/xmlwriter.o
+LIBOBJECTS+=obj/attagparser.o
+LIBOBJECTS+=obj/filestream.o
+LIBOBJECTS+=obj/bufferstream.o
+
+TESTS+=test01_blockspool
+TESTS+=test02_bufferstream
+
+############################# GENERIC RULES ##################################
+
+# .PHONY указывает цели которые не создают файлов.
+.PHONY: all install deb clean distclean
+
+# первая цель - главная, она будет запускаться когда цель явно не указана
+all: libnano2.a
+
+.PHONY: test
+test: $(TESTS)
+
+test01_blockspool: libnano2.a test01_blockspool.cpp
+	gcc -o test01_blockspool test01_blockspool.cpp -L. -I. -lstdc++ -lnano2
+	
+test02_bufferstream: libnano2.a test02_bufferstream.cpp
+	gcc -o test02_bufferstream test02_bufferstream.cpp -L. -I. -lstdc++ -lnano2
+
+# установка файлов
+# примечение: будем отходить от этой практике, рекомендуется создавать пакет
+# и устанавливать через менеджер пакетов.
+.PHONY: install
+install:
+	# TODO...
+
+# сборка deb-пакетов, просто короткая цель чтобы не вспоминать имя пакета
+deb: $(DEB_FILENAME)
+
+# сборка пакета
+$(DEB_FILENAME): deb_clean deb_install
+	fakeroot dpkg-deb --build deb $(DEB_FILENAME)
+
+.PHONY: deb_install
+deb_install:
+	mkdir -p deb/usr/include/nanosoft/
+	install -m 0644 nanosoft/*.h deb/usr/include/nanosoft/
+	mkdir -p deb/usr/lib
+	install -m 0644 libnano2.a deb/usr/lib
+	mkdir -p deb/usr/share/libnano2
+	install -m 0644 README.md deb/usr/share/libnano2/
+
+########################## BUILD RULES #######################################
+
+libnano2.a: $(LIBOBJECTS) nanosoft/config.h
+	$(AR) rc libnano2.a $(LIBOBJECTS)
+	$(RANLIB) libnano2.a
+
+obj/asyncagent.o: nanosoft/asyncagent.cpp nanosoft/asyncagent.h
+	$(CXX) -c nanosoft/asyncagent.cpp -o obj/asyncagent.o
+
+obj/asyncdns.o: nanosoft/asyncdns.cpp nanosoft/asyncdns.h
+	$(CXX) -c nanosoft/asyncdns.cpp -o obj/asyncdns.o
+
+obj/asyncobject.o: nanosoft/asyncobject.cpp nanosoft/asyncobject.h
+	$(CXX) -c nanosoft/asyncobject.cpp -o obj/asyncobject.o
+
+obj/asyncserver.o: nanosoft/asyncserver.cpp nanosoft/asyncserver.h
+	$(CXX) -c nanosoft/asyncserver.cpp -o obj/asyncserver.o
+
+obj/asyncstream.o: nanosoft/asyncstream.cpp nanosoft/asyncstream.h nanosoft/config.h
+	$(CXX) -c nanosoft/asyncstream.cpp -o obj/asyncstream.o
+
+obj/asyncudpserver.o: nanosoft/asyncudpserver.cpp nanosoft/asyncudpserver.h
+	$(CXX) -c nanosoft/asyncudpserver.cpp -o obj/asyncudpserver.o
+
+obj/asyncxmlstream.o: nanosoft/asyncxmlstream.cpp nanosoft/asyncxmlstream.h
+	$(CXX) -c nanosoft/asyncxmlstream.cpp -o obj/asyncxmlstream.o
+
+obj/attagparser.o: nanosoft/attagparser.cpp nanosoft/attagparser.h nanosoft/xml_types.h
+	$(CXX) -c nanosoft/attagparser.cpp -o obj/attagparser.o
+
+obj/blockspool.o: nanosoft/blockspool.cpp nanosoft/blockspool.h nanosoft/config.h
+	$(CXX) -c nanosoft/blockspool.cpp -o obj/blockspool.o
+
+obj/debug.o: nanosoft/debug.cpp nanosoft/debug.h
+	$(CXX) -c nanosoft/debug.cpp -o obj/debug.o
+
+obj/easylib.o: nanosoft/easylib.cpp nanosoft/easylib.h
+	$(CXX) -c nanosoft/easylib.cpp -o obj/easylib.o
+
+obj/easymysql.o: nanosoft/easymysql.cpp nanosoft/easymysql.h nanosoft/easyrow.h nanosoft/easyresultset.h
+	$(CXX) -c nanosoft/easymysql.cpp -o obj/easymysql.o
+
+obj/easylist.o: nanosoft/easylist.cpp nanosoft/easylist.h
+	$(CXX) -c nanosoft/easylist.cpp -o obj/easylist.o
+
+obj/easyresultset.o: nanosoft/easyresultset.cpp nanosoft/easyrow.h nanosoft/easyresultset.h
+	$(CXX) -c nanosoft/easyresultset.cpp -o obj/easyresultset.o
+	
+obj/easyrow.o: nanosoft/easyrow.cpp nanosoft/easyrow.h
+	$(CXX) -c nanosoft/easyrow.cpp -o obj/easyrow.o
+
+obj/easyvector.o: nanosoft/easyvector.cpp nanosoft/easyvector.h
+	$(CXX) -c nanosoft/easyvector.cpp -o obj/easyvector.o
+
+obj/error.o: nanosoft/error.cpp nanosoft/error.h
+	$(CXX) -c nanosoft/error.cpp -o obj/error.o
+
+obj/logger.o: nanosoft/logger.cpp nanosoft/logger.h
+	$(CXX) -c nanosoft/logger.cpp -o obj/logger.o
+
+obj/netdaemon.o: nanosoft/netdaemon.cpp nanosoft/netdaemon.h nanosoft/config.h nanosoft/processmanager.h
+	$(CXX) -c nanosoft/netdaemon.cpp -o obj/netdaemon.o
+
+obj/object.o: nanosoft/object.cpp nanosoft/object.h
+	$(CXX) -c nanosoft/object.cpp -o obj/object.o
+
+obj/processmanager.o: nanosoft/processmanager.cpp nanosoft/processmanager.h
+	$(CXX) -c nanosoft/processmanager.cpp -o obj/processmanager.o
+
+obj/tagbuilder.o: nanosoft/tagbuilder.cpp nanosoft/tagbuilder.h nanosoft/xml_types.h
+	$(CXX) -c nanosoft/tagbuilder.cpp -o obj/tagbuilder.o
+
+obj/taghelper.o: nanosoft/taghelper.cpp nanosoft/taghelper.h nanosoft/xml_types.h
+	$(CXX) -c nanosoft/taghelper.cpp -o obj/taghelper.o
+
+obj/tempstring.o: nanosoft/tempstring.cpp nanosoft/tempstring.h
+	$(CXX) -c nanosoft/tempstring.cpp -o obj/tempstring.o
+
+obj/xml_tag.o: nanosoft/xml_tag.cpp nanosoft/xml_tag.h nanosoft/xml_types.h
+	$(CXX) -c nanosoft/xml_tag.cpp -o obj/xml_tag.o
+
+obj/xml_types.o: nanosoft/xml_types.cpp nanosoft/xml_types.h
+	$(CXX) -c nanosoft/xml_types.cpp -o obj/xml_types.o
+
+obj/xmlparser.o: nanosoft/xmlparser.cpp nanosoft/xmlparser.h
+	$(CXX) -c nanosoft/xmlparser.cpp -o obj/xmlparser.o
+
+obj/xmlwriter.o: nanosoft/xmlwriter.cpp nanosoft/xmlwriter.h
+	$(CXX) -c nanosoft/xmlwriter.cpp -o obj/xmlwriter.o
+
+obj/filestream.o: nanosoft/filestream.cpp nanosoft/filestream.h nanosoft/stream.h
+	$(CXX) -c nanosoft/filestream.cpp -o obj/filestream.o
+
+obj/bufferstream.o: nanosoft/bufferstream.cpp nanosoft/bufferstream.h nanosoft/stream.h
+	$(CXX) -c nanosoft/bufferstream.cpp -o obj/bufferstream.o
+
+########################### CLEAN RULES ######################################
+
+# полная очистка
+distclean: clean deb_clean
+	rm -f Makefile $(DEB_FILENAME) deb/DEBIAN/control
+	rm -f config.log config.status
+	rm -f nanosoft/config.h
+	rm -rf autom4te.cache
+	rm -rf libnano2.a $(TESTS)
+
+# простая очистка, промежуточные файлы, но оставляет целевые
+clean:
+	rm -f obj/*.o
+
+# зачистка в каталоге deb-пакета
+.PHONY: deb_clean
+deb_clean:
+	rm -rf deb/usr
