@@ -13,7 +13,7 @@
 /**
 * Асинхронный парсер XML потоков
 */
-class AsyncXMLStream: public AsyncStream, public nanosoft::XMLParser
+class AsyncXMLStream: public AsyncStream, public XMLParser
 {
 protected:
 	/**

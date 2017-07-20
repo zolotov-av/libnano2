@@ -2,9 +2,6 @@
 #include <nanosoft/attagparser.h>
 #include <nanosoft/filestream.h>
 
-//using namespace std;
-using namespace nanosoft;
-
 /**
 * Конструктор парсера
 */

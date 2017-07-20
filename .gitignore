@@ -14,6 +14,7 @@ lib*.a
 /test01_blockspool
 /test02_bufferstream
 /test03_globaltimer
+/test04_xml
 
 # deb-package building
 /deb/usr/

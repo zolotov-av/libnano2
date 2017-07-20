@@ -7,14 +7,12 @@
 #include <nanosoft/xml_types.h>
 #include <nanosoft/xml_tag.h>
 
-#include <iostream>
-
 /**
 * Паресер XML-файлов
 *
 * ATTagParser парсит файл целиком в один ATXmlTag
 */
-class ATTagParser: protected nanosoft::XMLParser, protected ATTagBuilder
+class ATTagParser: protected XMLParser, protected ATTagBuilder
 {
 public:
 	/**

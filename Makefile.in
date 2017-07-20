@@ -99,6 +99,7 @@ LIBOBJECTS+=obj/utils.o
 TESTS+=test01_blockspool
 TESTS+=test02_bufferstream
 TESTS+=test03_globaltimer
+TESTS+=test04_xml
 
 ############################# GENERIC RULES ##################################
 
@@ -122,6 +123,9 @@ test02_bufferstream: libnano2.a test02_bufferstream.cpp
 
 test03_globaltimer: libnano2.a test03_globaltimer.cpp
 	$(CTEST) -o test03_globaltimer test03_globaltimer.cpp -L. -I. -lstdc++ -lnano2 -ludns
+
+test04_xml: libnano2.a test04_xml.cpp nanosoft/xmlparser.h nanosoft/attagparser.h
+	$(CTEST) -o test04_xml test04_xml.cpp -L. -I. -lstdc++ -lnano2 -lexpat
 
 # установка файлов
 # примечение: будем отходить от этой практике, рекомендуется создавать пакет
