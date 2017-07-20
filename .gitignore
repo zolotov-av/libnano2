@@ -1,0 +1,19 @@
+
+# ./configure output
+/Makefile
+/config.log
+/config.status
+/deb/DEBIAN/control
+/nanosoft/config.h
+
+# compiled objects & libs
+*.o
+lib*.a
+
+# produced executables
+/test01_blockspool
+/test02_bufferstream
+
+# deb-package building
+/deb/usr/
+/libnano2-amd64.deb
