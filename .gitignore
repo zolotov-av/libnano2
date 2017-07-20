@@ -13,6 +13,7 @@ lib*.a
 # produced executables
 /test01_blockspool
 /test02_bufferstream
+/test03_globaltimer
 
 # deb-package building
 /deb/usr/

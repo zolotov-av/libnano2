@@ -195,7 +195,7 @@ private:
 	/**
 	* Действие активного цикла
 	*/
-	void doActiveAction();
+	void doActiveAction(int wait_time);
 	
 	/**
 	* Возобновить работу с асинхронным объектом
@@ -214,7 +214,7 @@ private:
 	/**
 	* Обработать таймеры
 	*/
-	void processTimers();
+	void processTimers(const struct timeval &tv);
 	
 	/**
 	* Добавить данные в буфер (thread-unsafe)

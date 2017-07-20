@@ -83,6 +83,7 @@ LIBOBJECTS+=obj/bufferstream.o
 
 TESTS+=test01_blockspool
 TESTS+=test02_bufferstream
+TESTS+=test03_globaltimer
 
 ############################# GENERIC RULES ##################################
 
@@ -100,6 +101,9 @@ test01_blockspool: libnano2.a test01_blockspool.cpp
 	
 test02_bufferstream: libnano2.a test02_bufferstream.cpp
 	gcc -o test02_bufferstream test02_bufferstream.cpp -L. -I. -lstdc++ -lnano2
+
+test03_globaltimer: libnano2.a test03_globaltimer.cpp
+	gcc -o test03_globaltimer test03_globaltimer.cpp -L. -I. -lstdc++ -lnano2 -ludns
 
 # установка файлов
 # примечение: будем отходить от этой практике, рекомендуется создавать пакет

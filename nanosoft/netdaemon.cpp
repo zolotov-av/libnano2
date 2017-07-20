@@ -363,10 +363,10 @@ bool NetDaemon::resetObject(ptr<AsyncObject> &object)
 /**
 * Действие активного цикла
 */
-void NetDaemon::doActiveAction()
+void NetDaemon::doActiveAction(int wait_time)
 {
 	struct epoll_event event;
-	int r = epoll_wait(epoll, &event, 1, sleep_time);
+	int r = epoll_wait(epoll, &event, 1, wait_time);
 	if ( r > 0 )
 	{
 		ptr<AsyncObject> obj = fds[event.data.fd].obj;
@@ -382,26 +382,63 @@ void NetDaemon::doActiveAction()
 }
 
 /**
+ * Вернуть время в миллисекундах
+ */
+static int64_t mtime(const timeval &tv)
+{
+	int64_t ts = tv.tv_sec;
+	return ts * 1000 + tv.tv_usec / 1000;
+}
+
+/**
 * Запустить демона
 */
 int NetDaemon::run()
 {
 	active = 1;
 	
+	int wait_ts;
+	int64_t curr_ts, next_ts;
 	struct timeval tv;
+	
 	gettimeofday(&tv, 0);
-	int prevtime = (tv.tv_sec % 10000000) * 100 + tv.tv_usec / 10000;
+	curr_ts = mtime(tv);
+	wait_ts = sleep_time - curr_ts % sleep_time;
+	next_ts = curr_ts + wait_ts;
 	
 	while ( count > 0 )
 	{
-		doActiveAction();
+		doActiveAction(wait_ts);
 		
 		gettimeofday(&tv, 0);
-		int ticktime = (tv.tv_sec % 10000000) * 100 + tv.tv_usec / 10000;
-		if ( ticktime != prevtime )
+		curr_ts = mtime(tv);
+		if ( curr_ts >= next_ts )
 		{
-			prevtime = ticktime;
-			processTimers();
+			// если пришло время сработать таймеру
+			processTimers(tv);
+			gettimeofday(&tv, 0);
+			curr_ts = mtime(tv);
+			wait_ts = sleep_time - curr_ts % sleep_time;
+			next_ts = curr_ts + wait_ts;
+		}
+		else if ( next_ts - curr_ts > sleep_time )
+		{
+			// если время прыгнуло назад
+			// в нормальной ситации разница между curr_ts и next_ts не более
+			// чем sleep_time
+			printf("Oops, time jump\n");
+			
+			// всё равно запускаем событие и инициализируем таймер
+			processTimers(tv);
+			gettimeofday(&tv, 0);
+			curr_ts = mtime(tv);
+			wait_ts = sleep_time - curr_ts % sleep_time;
+			next_ts = curr_ts + wait_ts;
+		}
+		else
+		{
+			// если время еще не пришло, то просто расчитаем время ожидания
+			wait_ts = sleep_time - curr_ts % sleep_time;
 		}
 	}
 
@@ -425,11 +462,9 @@ bool NetDaemon::callAt(time_t calltime, timer_callback_t callback, void *data)
 /**
 * Обработать таймеры
 */
-void NetDaemon::processTimers()
+void NetDaemon::processTimers(const struct timeval &tv)
 {
 	timer t;
-	timeval tv;
-	gettimeofday(&tv, 0);
 	if ( gtimer )
 	{
 		gtimer(tv, gtimer_data);
