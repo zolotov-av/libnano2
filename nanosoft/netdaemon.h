@@ -21,7 +21,6 @@
 #include <sys/time.h>
 #include <sys/wait.h>
 
-#include <iostream>
 #include <queue>
 
 #ifdef HAVE_GNUTLS

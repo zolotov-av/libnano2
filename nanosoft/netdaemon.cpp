@@ -2,8 +2,6 @@
 #include <nanosoft/logger.h>
 #include <nanosoft/utils.h>
 
-using namespace std;
-
 void my_gnutls_log_func( int level, const char *message)
 {
 	printf("gnutls: level=%d %s", level, message);
@@ -73,7 +71,7 @@ NetDaemon::~NetDaemon()
 */
 void NetDaemon::onError(const char *message)
 {
-	cerr << "[NetDaemon]: " << message << endl;
+	printf("[NetDaemon]: %s\n", message);
 }
 
 /**
