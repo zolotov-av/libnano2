@@ -17,4 +17,4 @@ lib*.a
 
 # deb-package building
 /deb/usr/
-/libnano2-amd64.deb
+/libnano2-*.deb

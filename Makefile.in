@@ -29,6 +29,11 @@ TARGET_OS:=@target_os@
 # ожидает менеджер пакетов
 DEB_ARCH:=@DEB_ARCH@
 
+# кодовое имя целевой операционной системы, задается произвольно через
+# --with-codename и используется только для того, чтобы было меньше путаницы
+# с пакетами, для какой ОС они собирались
+CODENAME:=@CODENAME@
+
 # configure может снабдить нас дополнительными опциями компилятора
 # так же мы можем передавать свои опции компилятора в configure
 # через одноименную переменную окружения и они появятся здесь
@@ -57,7 +62,7 @@ RANLIB:=ranlib
 ############################### VARS #########################################
 
 # Имя файла deb-пакета
-DEB_FILENAME=libnano2-$(DEB_ARCH).deb
+DEB_FILENAME=libnano2-$(CODENAME)-$(DEB_ARCH).deb
 
 LIBOBJECTS+=obj/asyncagent.o
 LIBOBJECTS+=obj/asyncdns.o
@@ -244,11 +249,11 @@ obj/utils.o: nanosoft/utils.cpp nanosoft/utils.h
 
 # полная очистка
 distclean: clean deb_clean
-	rm -f Makefile $(DEB_FILENAME) deb/DEBIAN/control
+	rm -f Makefile libnano2-*.deb deb/DEBIAN/control
 	rm -f config.log config.status
 	rm -f nanosoft/config.h
 	rm -rf autom4te.cache
-	rm -rf libnano2.a $(TESTS)
+	rm -f libnano2.a $(TESTS)
 
 # простая очистка, промежуточные файлы, но оставляет целевые
 clean:

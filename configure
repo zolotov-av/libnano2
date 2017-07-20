@@ -584,6 +584,7 @@ PACKAGE_URL=''
 ac_unique_file="nanosoft/config.h.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+CODENAME
 DEB_ARCH
 OBJEXT
 EXEEXT
@@ -645,6 +646,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+with_codename
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1264,6 +1266,11 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of libnano2 0.9:";;
    esac
   cat <<\_ACEOF
+
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-codename=NAME    codename of target OS
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -2433,6 +2440,24 @@ armv6l)
 esac
 
 # передаем переменную окружения DEB_ARCH в препроцессор мейк-файла
+
+
+CODENAME=none
+
+# Check whether --with-codename was given.
+if test "${with_codename+set}" = set; then :
+  withval=$with_codename;
+		if test x"$withval" != "x"; then
+			CODENAME=$withval
+		fi
+
+fi
+
+
+
+cat >>confdefs.h <<_ACEOF
+#define OS_CODENAME "$CODENAME"
+_ACEOF
 
 
 # указываем в каких файлах должен препроцессор произвести подстановку
