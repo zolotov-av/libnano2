@@ -1,5 +1,6 @@
 #include <nanosoft/netdaemon.h>
 #include <nanosoft/logger.h>
+#include <nanosoft/utils.h>
 
 using namespace std;
 
@@ -382,15 +383,6 @@ void NetDaemon::doActiveAction(int wait_time)
 }
 
 /**
- * Вернуть время в миллисекундах
- */
-static int64_t mtime(const timeval &tv)
-{
-	int64_t ts = tv.tv_sec;
-	return ts * 1000 + tv.tv_usec / 1000;
-}
-
-/**
 * Запустить демона
 */
 int NetDaemon::run()
@@ -402,7 +394,7 @@ int NetDaemon::run()
 	struct timeval tv;
 	
 	gettimeofday(&tv, 0);
-	curr_ts = mtime(tv);
+	curr_ts = millitime(tv);
 	wait_ts = sleep_time - curr_ts % sleep_time;
 	next_ts = curr_ts + wait_ts;
 	
@@ -411,13 +403,13 @@ int NetDaemon::run()
 		doActiveAction(wait_ts);
 		
 		gettimeofday(&tv, 0);
-		curr_ts = mtime(tv);
+		curr_ts = millitime(tv);
 		if ( curr_ts >= next_ts )
 		{
 			// если пришло время сработать таймеру
 			processTimers(tv);
 			gettimeofday(&tv, 0);
-			curr_ts = mtime(tv);
+			curr_ts = millitime(tv);
 			wait_ts = sleep_time - curr_ts % sleep_time;
 			next_ts = curr_ts + wait_ts;
 		}
@@ -431,7 +423,7 @@ int NetDaemon::run()
 			// всё равно запускаем событие и инициализируем таймер
 			processTimers(tv);
 			gettimeofday(&tv, 0);
-			curr_ts = mtime(tv);
+			curr_ts = millitime(tv);
 			wait_ts = sleep_time - curr_ts % sleep_time;
 			next_ts = curr_ts + wait_ts;
 		}

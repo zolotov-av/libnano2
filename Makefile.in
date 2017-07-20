@@ -80,6 +80,7 @@ LIBOBJECTS+=obj/xmlwriter.o
 LIBOBJECTS+=obj/attagparser.o
 LIBOBJECTS+=obj/filestream.o
 LIBOBJECTS+=obj/bufferstream.o
+LIBOBJECTS+=obj/utils.o
 
 TESTS+=test01_blockspool
 TESTS+=test02_bufferstream
@@ -223,6 +224,9 @@ obj/filestream.o: nanosoft/filestream.cpp nanosoft/filestream.h nanosoft/stream.
 
 obj/bufferstream.o: nanosoft/bufferstream.cpp nanosoft/bufferstream.h nanosoft/stream.h
 	$(CXX) -c nanosoft/bufferstream.cpp -o obj/bufferstream.o
+
+obj/utils.o: nanosoft/utils.cpp nanosoft/utils.h
+	$(CXX) -c nanosoft/utils.cpp -o obj/utils.o
 
 ########################### CLEAN RULES ######################################
 
