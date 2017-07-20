@@ -398,7 +398,7 @@ int NetDaemon::run()
 	wait_ts = sleep_time - curr_ts % sleep_time;
 	next_ts = curr_ts + wait_ts;
 	
-	while ( count > 0 )
+	while ( active )
 	{
 		doActiveAction(wait_ts);
 		
@@ -435,6 +435,17 @@ int NetDaemon::run()
 	}
 
 	return 0;
+}
+
+/**
+* Остановить демона
+*
+* Функция run() возвращает управление, но состояние сохраняется и run()
+* может быть запущена снова
+*/
+void NetDaemon::stop()
+{
+	active = 0;
 }
 
 /**
