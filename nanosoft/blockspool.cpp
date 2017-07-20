@@ -1,8 +1,10 @@
 
 #include <nanosoft/blockspool.h>
+#include <nanosoft/config.h>
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
 * Конструктор

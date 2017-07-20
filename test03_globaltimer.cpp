@@ -2,6 +2,9 @@
 #include <nanosoft/netdaemon.h>
 #include <nanosoft/asyncdns.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 void on_timer(const timeval &tv, NetDaemon* daemon)
 {
 	static int count = 0;

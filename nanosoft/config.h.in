@@ -1,5 +1,5 @@
-#ifndef LIBNANO_CONFIG
-#define LIBNANO_CONFIG
+#ifndef NANOSOFT_CONFIG_H
+#define NANOSOFT_CONFIG_H
 
 #undef HAVE_GAI_STRERROR
 #undef UNIX
@@ -60,17 +60,13 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #ifdef WINDOWS
-
 #undef USE_GETADDRINFO
-
 #endif
 
 ///////////////////////////////////////////////////////////////////////////
 
 #ifdef UNIX
-
 #define USE_GETADDRINFO
-
 #endif
 
-#endif // LIBNANO_CONFIG
+#endif // NANOSOFT_CONFIG_H

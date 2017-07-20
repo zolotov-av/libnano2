@@ -1,5 +1,7 @@
 
 #include <nanosoft/bufferstream.h>
+#include <nanosoft/config.h>
+
 #include <string.h>
 
 /**

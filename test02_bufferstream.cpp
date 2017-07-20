@@ -9,6 +9,7 @@
 #include <string>
 
 #include <nanosoft/bufferstream.h>
+#include <nanosoft/config.h>
 
 int test_count;
 int fail_count;

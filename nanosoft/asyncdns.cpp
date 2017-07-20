@@ -1,4 +1,8 @@
+
 #include <nanosoft/asyncdns.h>
+
+#include <sys/time.h>
+#include <sys/epoll.h>
 
 /**
  * Глобальная переменная-ссылка на резолвер днс

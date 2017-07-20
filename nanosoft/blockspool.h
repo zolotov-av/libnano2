@@ -1,9 +1,8 @@
 #ifndef NANOSOFT_BLOCKSPOOL_H
 #define NANOSOFT_BLOCKSPOOL_H
 
-#include <stdlib.h>
 #include <stdint.h>
-#include <nanosoft/config.h>
+#include <sys/types.h>
 
 /**
  * Структура описывающая один блок буфера

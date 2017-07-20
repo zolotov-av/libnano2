@@ -2,24 +2,10 @@
 #define NANOSOFT_NETDAEMON_H
 
 #include <nanosoft/asyncobject.h>
-#include <nanosoft/error.h>
 #include <nanosoft/object.h>
 #include <nanosoft/config.h>
 #include <nanosoft/blockspool.h>
-#include <nanosoft/easylib.h>
 #include <nanosoft/processmanager.h>
-
-#include <stdio.h>
-#include <string.h>
-
-#include <fcntl.h>
-#include <errno.h>
-#include <signal.h>
-#include <unistd.h>
-
-#include <sys/epoll.h>
-#include <sys/time.h>
-#include <sys/wait.h>
 
 #include <queue>
 
@@ -38,6 +24,7 @@ typedef void (*timer_callback_t) (const timeval &tv, void *data);
 class NetDaemon: public ProcessManager
 {
 private:
+	
 	/**
 	* Файловый дескриптор epoll
 	*/
@@ -225,13 +212,14 @@ private:
 	* @return TRUE данные приняты, FALSE данные не приняты - нет места
 	*/
 	bool put(int fd, fd_info_t *fb, const char *data, size_t len);
-protected:
+	
 	/**
 	* Обработка системной ошибки
 	*/
 	void stderror();
 	
 public:
+	
 	/**
 	* Конструктор демона
 	* @param fd_limit максимальное число одновременных виртуальных потоков
@@ -242,7 +230,7 @@ public:
 	/**
 	* Деструктор демона
 	*/
-	virtual ~NetDaemon();
+	~NetDaemon();
 	
 	/**
 	 * Вернуть время ожидания для epoll_wait
@@ -252,14 +240,14 @@ public:
 	/**
 	 * Установить время ожидания для epoll_wait
 	 *
-	 * Оказвыает влияние на частоту таймеров. Если указать
-	 * слишком маленькое значение, то частота таймера (глобального)
-	 * повыситься, но будет тратиться больше процессорного времени
-	 * на обработку таймера. Если указать слишком высокое значение,
-	 * то таймеры будут обратываться реже и возможно будут запаздывать.
+	 * Оказывает влияние на частоту обработки таймеров и соответственно их
+	 * точность. Если указать слишком маленькое значение, то частота таймера
+	 * (глобального) повыситься, но будет тратиться больше процессорного времени
+	 * на обработку таймеров. Если указать слишком высокое значение, то таймеры
+	 * будут обрабатываться реже и возможно будут запаздывать.
 	 *
-	 * Значение по умолчанию (200мс) выбрано из расчета что обычно
-	 * не требуется большая точность таймеров и оверхед на CPU нежелателен
+	 * Значение по умолчанию (200мс) выбрано из расчета что обычно не требуется
+	 * большая точность таймеров и оверхед на CPU нежелателен
 	 */
 	void setSleepTime(int v);
 	
@@ -374,13 +362,6 @@ public:
 		gtimer = reinterpret_cast<timer_callback_t>(callback);
 		gtimer_data = data;
 	}
-
-	/**
-	* Обработчик ошибок
-	*
-	* По умолчанию выводит все ошибки в stderr
-	*/
-	virtual void onError(const char *message);
 	
 	/**
 	* Вернуть число свободных блоков в буфере

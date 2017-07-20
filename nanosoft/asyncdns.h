@@ -4,11 +4,6 @@
 #include <nanosoft/asyncobject.h>
 #include <nanosoft/netdaemon.h>
 
-#include <time.h>
-
-#include <sys/epoll.h>
-#include <sys/types.h>
-
 #include <udns.h>
 
 /**
@@ -17,6 +12,10 @@
 class AsyncDNS: public AsyncObject
 {
 protected:
+	
+	/**
+	 * Ссылка на NetDaemon
+	 */
 	NetDaemon *daemon;
 	
 	/**

@@ -2,6 +2,15 @@
 #include <nanosoft/logger.h>
 #include <nanosoft/utils.h>
 
+#include <string.h>
+
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+
+#include <sys/epoll.h>
+#include <sys/time.h>
+
 void my_gnutls_log_func( int level, const char *message)
 {
 	printf("gnutls: level=%d %s", level, message);
@@ -65,21 +74,11 @@ NetDaemon::~NetDaemon()
 }
 
 /**
-* Обработчик ошибок
-*
-* По умолчанию выводит все ошибки в stderr
-*/
-void NetDaemon::onError(const char *message)
-{
-	printf("[NetDaemon]: %s\n", message);
-}
-
-/**
 * Обработка системной ошибки
 */
 void NetDaemon::stderror()
 {
-	onError(strerror(errno));
+	printf("[NetDaemon]: %s\n", strerror(errno));
 }
 
 /**

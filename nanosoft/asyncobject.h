@@ -3,12 +3,7 @@
 
 #include <nanosoft/object.h>
 
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-
-#include <errno.h>
-
 #include <sys/types.h>
 
 class NetDaemon;

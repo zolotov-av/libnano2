@@ -2,15 +2,9 @@
 #define NANOSOFT_PROCESSMANAGER_H
 
 #include <nanosoft/object.h>
-#include <nanosoft/config.h>
 #include <nanosoft/easylib.h>
 
 #include <string>
-
-#include <errno.h>
-#include <unistd.h>
-
-#include <stdio.h>
 
 /**
 * callback обработчика завершения подпроцесса
