@@ -4,20 +4,9 @@
 
 using namespace std;
 
-NetDaemon *daemon_instance = 0;
-unsigned int sigchld_counter = 0;
-
 void my_gnutls_log_func( int level, const char *message)
 {
 	printf("gnutls: level=%d %s", level, message);
-}
-
-static void signalHandler(int signo) {
-	if(daemon_instance == 0) return;
-
-	if(signo == SIGCHLD) {
-		sigchld_counter ++;
-	}
 }
 
 /**
@@ -26,7 +15,6 @@ static void signalHandler(int signo) {
 * @param buf_size размер файлового буфера в блоках
 */
 NetDaemon::NetDaemon(int fd_limit, int buf_size): sleep_time(200), timerCount(0), gtimer(0), count(0), active(0) {
-	signal(SIGCHLD, signalHandler);
 	limit = fd_limit;
 	epoll = epoll_create(fd_limit);
 	
@@ -61,12 +49,6 @@ NetDaemon::NetDaemon(int fd_limit, int buf_size): sleep_time(200), timerCount(0)
 	gnutls_global_set_log_function(my_gnutls_log_func);
 #endif // DEBUG_TLS
 #endif // HAVE_GNUTLS
-
-	/*
-	* Так как предполагается, что у нас всегда один экземпляр NetDaemon, я сделаю присваивание прямо при создании объекта © WST
-	* Поправьте меня, если я ошибаюсь.
-	*/
-	daemon_instance = this;
 }
 
 /**
