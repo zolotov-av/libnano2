@@ -49,6 +49,30 @@ EasyRow::~EasyRow()
 }
 
 /**
+* Очистить запись
+*
+* Действие функции clear() оказывает на всех кто имеет ссылку на объект,
+* т.е. удаляются сами данные.
+*/
+void EasyRow::clear()
+{
+	ref->clear();
+}
+
+/**
+* Сбросить запись
+*
+* В отличие от функции clear() данные не очищаются, а сбрасывается только
+* указатель и создается новый чистый объект, таким образом данная функция
+* не оказывает влияния на других пользователей ссылающихся на данные.
+* Если на старые данные никто не ссылается, то они осовбождаются.
+*/
+void EasyRow::reset()
+{
+	ref = new Row();
+}
+
+/**
 * Притворяемся что мы map<>
 *
 * Если ключа нет, то он автоматически создается. Если автоматическое
@@ -101,6 +125,22 @@ std::string EasyRow::get(const std::string &key, const std::string &defval) cons
 void EasyRow::set(const std::string &key, const std::string &value)
 {
 	ref->operator [] (key) = value;
+}
+
+/**
+* Проверить существование ключа/поля
+*/
+bool EasyRow::exists(const char *key) const
+{
+	return ref->find(key) != ref->end();
+}
+
+/**
+* Проверить существование ключа/поля
+*/
+bool EasyRow::exists(const std::string &key) const
+{
+	return ref->find(key) != ref->end();
 }
 
 /**
