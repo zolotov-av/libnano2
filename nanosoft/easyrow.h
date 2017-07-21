@@ -98,7 +98,7 @@ public:
 	 * Берет ссылку на новый объект, старый отсоединяется, оба объекта начинают
 	 * указывать на один набор данных
 	 */
-	inline EasyRow& operator = (const EasyRow &row) { ref = row.ref; }
+	inline EasyRow& operator = (const EasyRow &row) { ref = row.ref; return *this; }
 	
 	/**
 	 * Притворяемся что мы map<>
