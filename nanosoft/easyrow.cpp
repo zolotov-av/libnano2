@@ -116,12 +116,13 @@ void EasyRow::erase(const std::string &key)
 */
 EasyList EasyRow::keys() const
 {
-	EasyList result;
+	EasyList result(ref->size());
 	
+	int i = 0;
 	const_iterator it = begin();
 	while ( it != end() )
 	{
-		result.push_back(it->first);
+		result.set(i++, it->first);
 		++it;
 	}
 	
@@ -133,12 +134,13 @@ EasyList EasyRow::keys() const
 */
 EasyList EasyRow::values() const
 {
-	EasyList result;
+	EasyList result(ref->size());
 	
+	int i = 0;
 	const_iterator it = begin();
 	while ( it != end() )
 	{
-		result.push_back(it->second);
+		result.set(i++, it->second);
 		++it;
 	}
 	

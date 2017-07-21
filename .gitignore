@@ -15,6 +15,7 @@ lib*.a
 /test02_bufferstream
 /test03_globaltimer
 /test04_xml
+/test05_easyrow
 
 # deb-package building
 /deb/usr/

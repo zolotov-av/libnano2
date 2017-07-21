@@ -100,6 +100,7 @@ TESTS+=test01_blockspool
 TESTS+=test02_bufferstream
 TESTS+=test03_globaltimer
 TESTS+=test04_xml
+TESTS+=test05_easyrow
 
 ############################# GENERIC RULES ##################################
 
@@ -126,6 +127,9 @@ test03_globaltimer: libnano2.a test03_globaltimer.cpp
 
 test04_xml: libnano2.a test04_xml.cpp nanosoft/xmlparser.h nanosoft/attagparser.h
 	$(CTEST) -o test04_xml test04_xml.cpp -L. -I. -lstdc++ -lnano2 -lexpat
+
+test05_easyrow: libnano2.a test05_easyrow.cpp
+	$(CTEST) -o test05_easyrow test05_easyrow.cpp -L. -I. -lstdc++ -lnano2
 
 # установка файлов
 # примечение: будем отходить от этой практике, рекомендуется создавать пакет
@@ -198,7 +202,7 @@ obj/easylist.o: nanosoft/easylist.cpp nanosoft/easylist.h
 obj/easyresultset.o: nanosoft/easyresultset.cpp nanosoft/easyrow.h nanosoft/easyresultset.h
 	$(CXX) -c nanosoft/easyresultset.cpp -o obj/easyresultset.o
 	
-obj/easyrow.o: nanosoft/easyrow.cpp nanosoft/easyrow.h
+obj/easyrow.o: nanosoft/easyrow.cpp nanosoft/easyrow.h nanosoft/easylist.h
 	$(CXX) -c nanosoft/easyrow.cpp -o obj/easyrow.o
 
 obj/easyvector.o: nanosoft/easyvector.cpp nanosoft/easyvector.h
