@@ -1,10 +1,10 @@
-
 #ifndef AT_XML_TYPES_H
 #define AT_XML_TYPES_H
 
+#include <nanosoft/easyrow.h>
+
 #include <string>
 #include <vector>
-#include <map>
 #include <list>
 
 class ATXmlTag;
@@ -31,7 +31,10 @@ typedef std::vector<ATXmlTag*> tags_stack_t;
 typedef std::list<ATXmlTag*> tags_list_t;
 typedef std::list<ATXmlNode*> nodes_list_t;
 
-class attributes_t: public std::map<std::string, std::string>
+/**
+ * Атрибуты XML-тега
+ */
+class attributes_t: public EasyRow
 {
 public:
 	/**
@@ -118,4 +121,4 @@ public:
 	void removeAttribute(const std::string &name);
 };
 
-#endif
+#endif // AT_XML_TYPES_H

@@ -12,7 +12,7 @@
 */
 bool attributes_t::hasAttribute(const std::string &name) const
 {
-	return this->find(name) != this->end();
+	return exists(name);
 }
 
 /**
@@ -22,7 +22,7 @@ bool attributes_t::hasAttribute(const std::string &name) const
 */
 bool attributes_t::hasAttribute(const char *name) const
 {
-	return this->find(name) != this->end();
+	return exists(name);
 }
 
 /**
@@ -33,8 +33,7 @@ bool attributes_t::hasAttribute(const char *name) const
 */
 const std::string attributes_t::getAttribute(const std::string &name, const std::string &default_value) const
 {
-	const_iterator it = this->find(name);
-	return (it != this->end()) ? it->second : default_value;
+	return get(name, default_value);
 }
 
 /**
@@ -45,8 +44,7 @@ const std::string attributes_t::getAttribute(const std::string &name, const std:
 */
 const std::string attributes_t::getAttribute(const char *name, const char *default_value) const
 {
-	const_iterator it = this->find(name);
-	return (it != this->end()) ? it->second : default_value;
+	return get(name, default_value);
 }
 
 /**
