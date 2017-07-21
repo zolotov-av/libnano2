@@ -78,7 +78,6 @@ LIBOBJECTS+=obj/easymysql.o
 LIBOBJECTS+=obj/easylist.o
 LIBOBJECTS+=obj/easyresultset.o
 LIBOBJECTS+=obj/easyrow.o
-LIBOBJECTS+=obj/easyvector.o
 LIBOBJECTS+=obj/error.o
 LIBOBJECTS+=obj/logger.o
 LIBOBJECTS+=obj/netdaemon.o
@@ -204,9 +203,6 @@ obj/easyresultset.o: nanosoft/easyresultset.cpp nanosoft/easyrow.h nanosoft/easy
 	
 obj/easyrow.o: nanosoft/easyrow.cpp nanosoft/easyrow.h nanosoft/easylist.h
 	$(CXX) -c nanosoft/easyrow.cpp -o obj/easyrow.o
-
-obj/easyvector.o: nanosoft/easyvector.cpp nanosoft/easyvector.h
-	$(CXX) -c nanosoft/easyvector.cpp -o obj/easyvector.o
 
 obj/error.o: nanosoft/error.cpp nanosoft/error.h
 	$(CXX) -c nanosoft/error.cpp -o obj/error.o
