@@ -1,3 +1,4 @@
+
 #include <nanosoft/easyresultset.h>
 
 /**
@@ -6,6 +7,17 @@
 EasyResultSet::EasyResultSet()
 {
 	ref = new ResultSet();
+}
+
+/**
+* Конструктор
+*
+* Пустой набор данных на size строк (кортежей).
+*/
+EasyResultSet::EasyResultSet(int size)
+{
+	ref = new ResultSet();
+	resize(size);
 }
 
 /**
@@ -25,6 +37,14 @@ EasyResultSet::~EasyResultSet()
 }
 
 /**
+* Установить размер набора данных (число строк)
+*/
+void EasyResultSet::resize(int size)
+{
+	ref->resize(size);
+}
+
+/**
 * Очистить список
 */
 void EasyResultSet::clear()
@@ -40,4 +60,35 @@ void EasyResultSet::clear()
 void EasyResultSet::reset()
 {
 	ref = new ResultSet();
+}
+
+/**
+* Претворяемся что мы vector<>
+*/
+EasyRow EasyResultSet::operator [] (int idx)
+{
+	return ref->operator [] (idx);
+}
+
+/**
+* Вернуть строку по индексу
+*
+* Проверка на выход за границы не выполняется.
+*/
+EasyRow EasyResultSet::get(int pos) const
+{
+	return ref->operator [] (pos);
+}
+
+/**
+* Установить строку по индексу
+*
+* Проверка на выход за границы не выполняется.
+*
+* NOTE копируется ссылка на объект, если нужно создать независимую копию
+* объекта, то используйте copy()
+*/
+void EasyResultSet::set(int pos, EasyRow row)
+{
+	ref->operator [] (pos) = row;
 }

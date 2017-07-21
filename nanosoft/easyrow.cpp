@@ -146,3 +146,12 @@ EasyList EasyRow::values() const
 	
 	return result;
 }
+
+/**
+* Вернуть независимую копию
+*/
+EasyRow EasyRow::copy() const
+{
+	std::map<std::string, std::string> *row = ref.getObject();
+	return EasyRow(*row);
+}
