@@ -52,13 +52,29 @@ void EasyTag::setAttributef(const char *name, const char *fmt, ...)
 /**
 * Оператор присваивания
 *
-* Удаляет всех потомков и добавляет одну секцию CDATA
+* Сбрасывает всех потомков и добавляет одну секцию CDATA
+* NOTE замещается не текущий тег, а его потомки
+* NOTE функция возвращет исходный текст, а не this
 */
 const std::string & EasyTag::operator = (const std::string &text)
 {
 	tag->clear();
 	tag->append(text);
 	return text;
+}
+
+/**
+* Оператор присваивания
+*
+* Сбрасывает всех потомков и добавляет указанный тег/дерево
+* NOTE замещается не текущий тег, а его потомки
+* NOTE функция возвращет исходный тег/дерево, а не this
+*/
+const EasyTag& EasyTag::operator = (const EasyTag &tree)
+{
+	tag->clear();
+	tag->append(tree.tag);
+	return tree;
 }
 
 /**

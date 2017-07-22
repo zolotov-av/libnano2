@@ -109,6 +109,14 @@ void test_easytag()
 	
 	// text: <text><body format="plain">message</body></bar>
 	test_tag("text-plain", text, "<text><body format=\"plain\">message</body></text>");
+	
+	// заменим потомков тега <bar>
+	bar = text["body"];
+	test_tag("bar-body", bar, "<bar><body format=\"plain\">message</body></bar>");
+	
+	// очистим <text>
+	text.clear();
+	test_tag("text-empty", text, "<text />");
 }
 
 int main(int argc, char** argv)
