@@ -88,6 +88,8 @@ LIBOBJECTS+=obj/taghelper.o
 LIBOBJECTS+=obj/tempstring.o
 LIBOBJECTS+=obj/xml_tag.o
 LIBOBJECTS+=obj/xml_types.o
+LIBOBJECTS+=obj/easynode.o
+LIBOBJECTS+=obj/easytag.o
 LIBOBJECTS+=obj/xmlparser.o
 LIBOBJECTS+=obj/xmlwriter.o
 LIBOBJECTS+=obj/attagparser.o
@@ -233,6 +235,12 @@ obj/xml_tag.o: nanosoft/xml_tag.cpp nanosoft/xml_tag.h nanosoft/xml_types.h
 
 obj/xml_types.o: nanosoft/xml_types.cpp nanosoft/xml_types.h
 	$(CXX) -c nanosoft/xml_types.cpp -o obj/xml_types.o
+
+obj/easynode.o: nanosoft/easynode.cpp nanosoft/easynode.h
+	$(CXX) -c nanosoft/easynode.cpp -o obj/easynode.o
+
+obj/easytag.o: nanosoft/easytag.cpp nanosoft/easytag.h nanosoft/easynode.h
+	$(CXX) -c nanosoft/easytag.cpp -o obj/easytag.o
 
 obj/xmlparser.o: nanosoft/xmlparser.cpp nanosoft/xmlparser.h
 	$(CXX) -c nanosoft/xmlparser.cpp -o obj/xmlparser.o
