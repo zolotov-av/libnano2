@@ -56,6 +56,27 @@ void EasyTag::setAttributef(const char *name, const char *fmt, ...)
 */
 const std::string & EasyTag::operator = (const std::string &text)
 {
-	tag->nodes.clear();
+	tag->clear();
 	tag->append(text);
+	return text;
+}
+
+/**
+* Оператор добавления CDATA
+*
+* Добавить секцию CDATA в конец тега
+*/
+void EasyTag::operator += (const std::string &text)
+{
+	tag->append(text);
+}
+
+/**
+* Оператор добавления подтега
+*
+* Добавить подтега в конец тега
+*/
+void EasyTag::operator += (EasyTag t)
+{
+	tag->append(t.tag);
 }

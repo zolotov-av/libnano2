@@ -188,6 +188,20 @@ public:
 	 */
 	const std::string & operator = (const std::string &text);
 	
+	/**
+	 * Оператор добавления CDATA
+	 *
+	 * Добавить секцию CDATA в конец тега
+	 */
+	void operator += (const std::string &text);
+	
+	/**
+	 * Оператор добавления подтега
+	 *
+	 * Добавить подтега в конец тега
+	 */
+	void operator += (EasyTag t);
+	
 };
 
 #endif // NANOSOFT_EASYTAG_H

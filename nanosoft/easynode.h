@@ -62,6 +62,11 @@ public:
 	/**
 	 * Итератор
 	 */
+	typedef node_list_t::iterator iterator;
+	
+	/**
+	 * Константный итератор
+	 */
 	typedef node_list_t::const_iterator const_iterator;
 	
 	/**
@@ -109,6 +114,13 @@ public:
 	EasyNode(const char *tag_name);
 	
 	/**
+	 * Конструктор
+	 *
+	 * Создает копию узла (без дочених элементов)
+	 */
+	EasyNode(const Ref &node);
+	
+	/**
 	 * Деструктор
 	 */
 	virtual ~EasyNode();
@@ -124,6 +136,11 @@ public:
 	static Ref cdata(const std::string &value);
 	
 	/**
+	 * Создать копию узла/дерева
+	 */
+	static Ref clone(const Ref &tree);
+	
+	/**
 	 * Сериализовать в виде строки
 	 */
 	std::string serialize() const;
@@ -136,9 +153,19 @@ public:
 	std::string cdata() const;
 	
 	/**
+	 * Сбросить всех потомков
+	 */
+	void clear();
+	
+	/**
 	 * Добавить секцию CDATA
 	 */
 	void append(const std::string &value);
+	
+	/**
+	 * Добавить узел/дерево
+	 */
+	void append(Ref tree);
 	
 	/**
 	 * Найти первого потомка-тега с указанным именем

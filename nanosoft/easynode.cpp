@@ -12,7 +12,7 @@ using namespace nanosoft;
 *
 * Создает пустой текстовый блок
 */
-EasyNode::EasyNode(): type(EASYNODE_CDATA)
+EasyNode::EasyNode(): type(EASYNODE_CDATA), parent(NULL)
 {
 	printf("EasyNode[%p] create\n", this);
 }
@@ -22,9 +22,20 @@ EasyNode::EasyNode(): type(EASYNODE_CDATA)
 *
 * Создает узел-тег с указанным именем
 */
-EasyNode::EasyNode(const char *tag_name): type(EASYNODE_TAG), name(tag_name)
+EasyNode::EasyNode(const char *tag_name): type(EASYNODE_TAG), name(tag_name), parent(NULL)
 {
 	printf("EasyNode[%p] create <%s>\n", this, tag_name);
+}
+
+/**
+* Конструктор
+*
+* Создает копию узла (без дочених элементов)
+*/
+EasyNode::EasyNode(const Ref &node): type(node->type), name(node->name),
+	text(node->text), attr(node->attr.copy()), parent(NULL)
+{
+	printf("EasyNode[%p] copy <%s>\n", this, node->name.c_str());
 }
 
 /**
@@ -59,6 +70,21 @@ EasyNode::Ref EasyNode::cdata(const std::string &value)
 	node->text = value;
 	return node;
 }
+
+/**
+* Создать копию узла/дерева
+*/
+EasyNode::Ref EasyNode::clone(const Ref &tree)
+{
+	Ref node = new EasyNode(tree);
+	const_iterator end = tree->nodes.end();
+	for(const_iterator it = tree->nodes.begin(); it != end; ++it)
+	{
+		node->append(clone(*it));
+	}
+	return node;
+}
+
 
 /**
 * Сериализовать в виде строки
@@ -107,11 +133,43 @@ std::string EasyNode::cdata() const
 }
 
 /**
+* Сбросить всех потомков
+*/
+void EasyNode::clear()
+{
+	for(iterator it = nodes.begin(); it != nodes.end(); ++it)
+	{
+		(*it)->parent = NULL;
+	}
+	nodes.clear();
+}
+
+/**
 * Добавить секцию CDATA
 */
 void EasyNode::append(const std::string &value)
 {
-	nodes.push_back( cdata(value) );
+	append( cdata(value) );
+}
+
+/**
+* Добавить узел/дерево
+*/
+void EasyNode::append(Ref tree)
+{
+	printf("append <%s> += <%s>[parent=%p]\n", name.c_str(), tree->name.c_str(), tree->parent);
+	if ( tree->parent )
+	{
+		Ref node = clone(tree);
+		node->parent = this;
+		nodes.push_back(node);
+		return;
+	}
+	else
+	{
+		tree->parent = this;
+		nodes.push_back(tree);
+	}
 }
 
 /**
@@ -145,7 +203,7 @@ EasyNode::Ref EasyNode::pickup(const char *path)
 		if ( child == NULL )
 		{
 			child = new EasyNode(name.c_str());
-			cur->nodes.push_back(child);
+			cur->append(child);
 		}
 		cur = child;
 		path = remain + 1;
@@ -156,7 +214,7 @@ EasyNode::Ref EasyNode::pickup(const char *path)
 	if ( child == 0 )
 	{
 		child = new EasyNode(path);
-		cur->nodes.push_back(child);
+		cur->append(child);
 	}
 	
 	return child;
