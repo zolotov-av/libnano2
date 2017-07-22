@@ -110,9 +110,9 @@ void test_easytag()
 	// text: <text><body format="plain">message</body></bar>
 	test_tag("text-plain", text, "<text><body format=\"plain\">message</body></text>");
 	
-	// заменим потомков тега <bar>
+	// оператор присваивания (генерируемый компилятором) копирует ссылку
 	bar = text["body"];
-	test_tag("bar-body", bar, "<bar><body format=\"plain\">message</body></bar>");
+	test_tag("bar-body", bar, "<body format=\"plain\">message</body>");
 	
 	// очистим <text>
 	text.clear();

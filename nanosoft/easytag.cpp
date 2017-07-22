@@ -64,20 +64,6 @@ const std::string & EasyTag::operator = (const std::string &text)
 }
 
 /**
-* Оператор присваивания
-*
-* Сбрасывает всех потомков и добавляет указанный тег/дерево
-* NOTE замещается не текущий тег, а его потомки
-* NOTE функция возвращет исходный тег/дерево, а не this
-*/
-const EasyTag& EasyTag::operator = (const EasyTag &tree)
-{
-	tag->clear();
-	tag->append(tree.tag);
-	return tree;
-}
-
-/**
 * Оператор добавления CDATA
 *
 * Добавить секцию CDATA в конец тега
