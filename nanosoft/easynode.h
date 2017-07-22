@@ -100,6 +100,16 @@ public:
 	node_list_t nodes;
 	
 	/**
+	 * Счетчик созданных узлов
+	 */
+	static int node_created;
+	
+	/**
+	 * Счетчик удаленных узлов
+	 */
+	static int node_destroyed;
+	
+	/**
 	 * Конструктор
 	 *
 	 * Создает пустой текстовый блок

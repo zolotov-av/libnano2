@@ -9,6 +9,7 @@
 #include <nanosoft/attagparser.h>
 #include <nanosoft/taghelper.h>
 #include <nanosoft/easytag.h>
+#include <nanosoft/easynode.h>
 
 #include <string>
 #include <stdio.h>
@@ -16,6 +17,13 @@
 
 int test_count;
 int fail_count;
+
+const char *test(bool status)
+{
+	test_count++;
+	if ( ! status ) fail_count++;
+	return status ? " ok " : "fail";
+}
 
 void test_tag(const char *prefix, const EasyTag &tag, const char *expect)
 {
@@ -114,10 +122,11 @@ int main(int argc, char** argv)
 	
 	printf("test EasyTag\n");
 	test_easytag();
+	int leak = EasyNode::node_created - EasyNode::node_destroyed;
+	printf("[ %s ] EasyNode leakage = %d \n", test(leak == 0), leak);
 	printf("\n");
 	
-	printf("\n");
-	printf("test result %d of %d [ %s ]\n", (test_count - fail_count), test_count, (fail_count==0 ? "ok" : "fail"));
+	printf("[ %s ] result %d of %d \n", test(fail_count==0), (test_count - fail_count), test_count);
 	
 	return 0;
 }

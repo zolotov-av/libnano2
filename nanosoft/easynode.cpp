@@ -2,10 +2,19 @@
 #include <nanosoft/easynode.h>
 #include <nanosoft/xmlwriter.h>
 
-#include <stdio.h>
 #include <string.h>
 
 using namespace nanosoft;
+
+/**
+* Счетчик созданных узлов
+*/
+int EasyNode::node_created = 0;
+
+/**
+* Счетчик удаленных узлов
+*/
+int EasyNode::node_destroyed = 0;
 
 /**
 * Конструктор
@@ -14,7 +23,7 @@ using namespace nanosoft;
 */
 EasyNode::EasyNode(): type(EASYNODE_CDATA), parent(NULL)
 {
-	printf("EasyNode[%p] create\n", this);
+	node_created++;
 }
 
 /**
@@ -24,7 +33,7 @@ EasyNode::EasyNode(): type(EASYNODE_CDATA), parent(NULL)
 */
 EasyNode::EasyNode(const char *tag_name): type(EASYNODE_TAG), name(tag_name), parent(NULL)
 {
-	printf("EasyNode[%p] create <%s>\n", this, tag_name);
+	node_created++;
 }
 
 /**
@@ -35,7 +44,7 @@ EasyNode::EasyNode(const char *tag_name): type(EASYNODE_TAG), name(tag_name), pa
 EasyNode::EasyNode(const Ref &node): type(node->type), name(node->name),
 	text(node->text), attr(node->attr.copy()), parent(NULL)
 {
-	printf("EasyNode[%p] copy <%s>\n", this, node->name.c_str());
+	node_created++;
 }
 
 /**
@@ -43,14 +52,7 @@ EasyNode::EasyNode(const Ref &node): type(node->type), name(node->name),
 */
 EasyNode::~EasyNode()
 {
-	if ( type == EASYNODE_TAG )
-	{
-		printf("EasyNode[%p] destroy <%s>\n", this, name.c_str());
-	}
-	else
-	{
-		printf("EasyNode[%p] destroy\n", this);
-	}
+	node_destroyed++;
 }
 
 /**
@@ -157,7 +159,6 @@ void EasyNode::append(const std::string &value)
 */
 void EasyNode::append(Ref tree)
 {
-	printf("append <%s> += <%s>[parent=%p]\n", name.c_str(), tree->name.c_str(), tree->parent);
 	if ( tree->parent )
 	{
 		Ref node = clone(tree);
