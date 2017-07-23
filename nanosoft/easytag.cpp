@@ -10,9 +10,8 @@
 *
 * Создает пустой текстовый блок
 */
-EasyTag::EasyTag()
+EasyTag::EasyTag(): tag(new EasyNode())
 {
-	tag = new EasyNode();
 }
 
 /**
@@ -20,9 +19,27 @@ EasyTag::EasyTag()
 *
 * Создает тег с указанным именем
 */
-EasyTag::EasyTag(const char *tag_name)
+EasyTag::EasyTag(const char *tag_name): tag(new EasyNode(tag_name))
 {
-	tag = EasyNode::tag(tag_name);
+}
+
+/**
+* Конструктор
+*
+* Создает тег с указанным именем
+*/
+EasyTag::EasyTag(const std::string &tag_name): tag(new EasyNode(tag_name))
+{
+}
+
+/**
+* Конструктор
+*
+* Создает тег с указанным именем и атрибутами
+*/
+EasyTag::EasyTag(const std::string &tag_name, const EasyRow &atts):
+	tag(new EasyNode(tag_name, atts))
+{
 }
 
 /**
@@ -50,6 +67,32 @@ void EasyTag::setAttributef(const char *name, const char *fmt, ...)
 }
 
 /**
+* Создать дочений тег и вернуть ссылку на него
+*/
+EasyTag EasyTag::createTag(const std::string &name, const EasyRow &atts)
+{
+	EasyNode::Ref node = new EasyNode(name, atts);
+	tag->append(node);
+	return node;
+}
+
+/**
+* Создать дочений текстовый блок и вернуть ссылку на него
+*/
+void EasyTag::createText(const std::string &text)
+{
+	tag->append(text);
+}
+
+/**
+* Добавить тег/дерево дочерним элементом
+*/
+void EasyTag::append(EasyTag tree)
+{
+	tag->append(tree.tag);
+}
+
+/**
 * Оператор присваивания
 *
 * Сбрасывает всех потомков и добавляет одну секцию CDATA
@@ -61,24 +104,4 @@ const std::string & EasyTag::operator = (const std::string &text)
 	tag->clear();
 	tag->append(text);
 	return text;
-}
-
-/**
-* Оператор добавления CDATA
-*
-* Добавить секцию CDATA в конец тега
-*/
-void EasyTag::operator += (const std::string &text)
-{
-	tag->append(text);
-}
-
-/**
-* Оператор добавления подтега
-*
-* Добавить подтега в конец тега
-*/
-void EasyTag::operator += (EasyTag t)
-{
-	tag->append(t.tag);
 }

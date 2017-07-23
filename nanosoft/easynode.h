@@ -121,7 +121,14 @@ public:
 	 *
 	 * Создает узел-тег с указанным именем
 	 */
-	EasyNode(const char *tag_name);
+	explicit EasyNode(const std::string &tag_name);
+	
+	/**
+	 * Конструктор
+	 *
+	 * Создает узел-тег с указанным именем и атрибутами
+	 */
+	EasyNode(const std::string &tag_name, const EasyRow &atts);
 	
 	/**
 	 * Конструктор
@@ -136,11 +143,6 @@ public:
 	virtual ~EasyNode();
 	
 	/**
-	 * Создать узел тег
-	 */
-	static Ref tag(const char *name);
-	
-	/**
 	 * Создать узел CDATA
 	 */
 	static Ref cdata(const std::string &value);
@@ -148,7 +150,7 @@ public:
 	/**
 	 * Создать копию узла/дерева
 	 */
-	static Ref clone(const Ref &tree);
+	static Ref copy(const Ref &tree);
 	
 	/**
 	 * Сериализовать в виде строки

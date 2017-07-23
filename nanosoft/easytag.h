@@ -45,6 +45,11 @@ private:
 	 */
 	EasyTag(EasyNode::Ref ref): tag(ref) { }
 	
+	/**
+	 * Конструктор
+	 */
+	EasyTag(EasyNode *ptr): tag(ptr) { }
+	
 public:
 	
 	/**
@@ -60,6 +65,20 @@ public:
 	 * Создает тег с указанным именем
 	 */
 	explicit EasyTag(const char *tag_name);
+	
+	/**
+	 * Конструктор
+	 *
+	 * Создает тег с указанным именем
+	 */
+	explicit EasyTag(const std::string &tag_name);
+	
+	/**
+	 * Конструктор
+	 *
+	 * Создает тег с указанным именем и атрибутами
+	 */
+	EasyTag(const std::string &tag_name, const EasyRow &atts);
 	
 	/**
 	 * Деструктор
@@ -79,12 +98,12 @@ public:
 	/**
 	 * Вернуть ссылку атрибуты
 	 */
-	EasyRow attr() { return tag->attr; }
+	EasyRow& attr() { return tag->attr; }
 	
 	/**
 	 * Установить ссылку на атрибуты
 	 */
-	void setAttr(EasyRow attr) { tag->attr = attr; }
+	void setAttr(const EasyRow &attr) { tag->attr = attr; }
 	
 	/**
 	 * Вернуть содержимое CDATA
@@ -171,6 +190,21 @@ public:
 	void clear() { tag->clear(); }
 	
 	/**
+	 * Создать дочений тег и вернуть ссылку на него
+	 */
+	EasyTag createTag(const std::string &name, const EasyRow &atts);
+	
+	/**
+	 * Создать дочений текстовый блок и вернуть ссылку на него
+	 */
+	void createText(const std::string &text);
+	
+	/**
+	 * Добавить тег/дерево дочерним элементом
+	 */
+	void append(EasyTag tree);
+	
+	/**
 	 * Индексный оператор
 	 *
 	 * Ищет первый тег по указанному пути, если каких-то промежуточных узлов
@@ -200,14 +234,14 @@ public:
 	 *
 	 * Добавить секцию CDATA в конец тега
 	 */
-	void operator += (const std::string &text);
+	void operator += (const std::string &text) { createText(text); }
 	
 	/**
 	 * Оператор добавления подтега
 	 *
 	 * Добавить подтега в конец тега
 	 */
-	void operator += (EasyTag t);
+	void operator += (EasyTag tree) { append(tree); }
 	
 };
 

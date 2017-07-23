@@ -31,7 +31,19 @@ EasyNode::EasyNode(): type(EASYNODE_CDATA), parent(NULL)
 *
 * Создает узел-тег с указанным именем
 */
-EasyNode::EasyNode(const char *tag_name): type(EASYNODE_TAG), name(tag_name), parent(NULL)
+EasyNode::EasyNode(const std::string &tag_name): type(EASYNODE_TAG),
+	name(tag_name), parent(NULL)
+{
+	node_created++;
+}
+
+/**
+* Конструктор
+*
+* Создает узел-тег с указанным именем и атрибутами
+*/
+EasyNode::EasyNode(const std::string &tag_name, const EasyRow &atts):
+	type(EASYNODE_TAG), name(tag_name), attr(atts), parent(NULL)
 {
 	node_created++;
 }
@@ -56,14 +68,6 @@ EasyNode::~EasyNode()
 }
 
 /**
-* Создать узел тег
-*/
-EasyNode::Ref EasyNode::tag(const char *name)
-{
-	return new EasyNode(name);
-}
-
-/**
 * Создать узел CDATA
 */
 EasyNode::Ref EasyNode::cdata(const std::string &value)
@@ -76,13 +80,13 @@ EasyNode::Ref EasyNode::cdata(const std::string &value)
 /**
 * Создать копию узла/дерева
 */
-EasyNode::Ref EasyNode::clone(const Ref &tree)
+EasyNode::Ref EasyNode::copy(const Ref &tree)
 {
 	Ref node = new EasyNode(tree);
 	const_iterator end = tree->nodes.end();
 	for(const_iterator it = tree->nodes.begin(); it != end; ++it)
 	{
-		node->append(clone(*it));
+		node->append(copy(*it));
 	}
 	return node;
 }
@@ -161,7 +165,7 @@ void EasyNode::append(Ref tree)
 {
 	if ( tree->parent )
 	{
-		Ref node = clone(tree);
+		Ref node = copy(tree);
 		node->parent = this;
 		nodes.push_back(node);
 		return;
