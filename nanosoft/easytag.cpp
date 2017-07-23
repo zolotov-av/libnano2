@@ -93,6 +93,25 @@ void EasyTag::append(EasyTag tree)
 }
 
 /**
+* Найти голову дерева
+*/
+EasyTag EasyTag::head()
+{
+	return tag->head();
+}
+
+/**
+* Вернуть ссылку на предка
+*
+* Если предка нет, то вернет сам себя
+*/
+EasyTag EasyTag::parent() const
+{
+	if ( tag->parent ) return tag->parent;
+	return *this;
+}
+
+/**
 * Оператор присваивания
 *
 * Сбрасывает всех потомков и добавляет одну секцию CDATA

@@ -65,6 +65,7 @@ EasyNode::EasyNode(const Ref &node): type(node->type), name(node->name),
 EasyNode::~EasyNode()
 {
 	node_destroyed++;
+	clear();
 }
 
 /**
@@ -136,6 +137,16 @@ std::string EasyNode::cdata() const
 		result += (*it)->cdata();
 	}
 	return result;
+}
+
+/**
+* Найти голову дерева
+*/
+EasyNode::Ref EasyNode::head()
+{
+	EasyNode *node = this;
+	while ( node->parent ) node = node->parent;
+	return node;
 }
 
 /**

@@ -165,6 +165,11 @@ public:
 	std::string cdata() const;
 	
 	/**
+	 * Найти голову дерева
+	 */
+	Ref head();
+	
+	/**
 	 * Сбросить всех потомков
 	 */
 	void clear();

@@ -85,6 +85,7 @@ LIBOBJECTS+=obj/object.o
 LIBOBJECTS+=obj/processmanager.o
 LIBOBJECTS+=obj/tagbuilder.o
 LIBOBJECTS+=obj/taghelper.o
+LIBOBJECTS+=obj/tagparser.o
 LIBOBJECTS+=obj/tempstring.o
 LIBOBJECTS+=obj/xml_tag.o
 LIBOBJECTS+=obj/xml_types.o
@@ -226,6 +227,9 @@ obj/tagbuilder.o: nanosoft/tagbuilder.cpp nanosoft/tagbuilder.h nanosoft/xml_typ
 
 obj/taghelper.o: nanosoft/taghelper.cpp nanosoft/taghelper.h nanosoft/xml_types.h
 	$(CXX) -c nanosoft/taghelper.cpp -o obj/taghelper.o
+
+obj/tagparser.o: nanosoft/tagparser.cpp nanosoft/tagparser.h nanosoft/easytag.h
+	$(CXX) -c nanosoft/tagparser.cpp -o obj/tagparser.o
 
 obj/tempstring.o: nanosoft/tempstring.cpp nanosoft/tempstring.h
 	$(CXX) -c nanosoft/tempstring.cpp -o obj/tempstring.o

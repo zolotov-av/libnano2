@@ -10,6 +10,7 @@
 #include <nanosoft/taghelper.h>
 #include <nanosoft/easytag.h>
 #include <nanosoft/easynode.h>
+#include <nanosoft/tagparser.h>
 
 #include <string>
 #include <stdio.h>
@@ -119,6 +120,21 @@ void test_easytag()
 	test_tag("text-empty", text, "<text />");
 }
 
+void test_tagparser()
+{
+	// создадим какой-нибудь XML-документ
+	EasyTag html("html");
+	html["head/title"] = "example";
+	html["body"] = "Hello world";
+	
+	std::string xml = html.serialize();
+	printf("xml = %s\n", xml.c_str());
+	
+	TagParser parser;
+	EasyTag tag = parser.parseString(xml);
+	test_tag("parse-xml", tag, xml.c_str());
+}
+
 int main(int argc, char** argv)
 {
 	test_count = 0;
@@ -131,6 +147,11 @@ int main(int argc, char** argv)
 	printf("test EasyTag\n");
 	test_easytag();
 	int leak = EasyNode::node_created - EasyNode::node_destroyed;
+	printf("[ %s ] EasyNode leakage = %d \n", test(leak == 0), leak);
+	printf("\n");
+	
+	printf("test EasyTag\n");
+	test_tagparser();
 	printf("[ %s ] EasyNode leakage = %d \n", test(leak == 0), leak);
 	printf("\n");
 	
