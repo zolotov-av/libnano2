@@ -129,7 +129,7 @@ void XMLParser::close()
 * @param isFinal TRUE - последний кусок, FALSE - будет продолжение
 * @return TRUE - успешно, FALSE - ошибка парсинга
 */
-bool XMLParser::parseXML(const char *data, size_t len, bool isFinal)
+bool XMLParser::parseXML(const void *data, size_t len, bool isFinal)
 {
 	// если парсер не инициализирован, то вернуть FALSE
 	if ( ! parser ) return false;
@@ -138,7 +138,7 @@ bool XMLParser::parseXML(const char *data, size_t len, bool isFinal)
 	if ( parsing ) return false;
 	
 	parsing = true;
-	int r = XML_Parse(parser, data, len, isFinal);
+	int r = XML_Parse(parser, (const char*)data, len, isFinal);
 	parsing = false;
 	
 	if ( need_close )

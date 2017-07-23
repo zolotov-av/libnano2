@@ -26,6 +26,21 @@ TagParser::~TagParser()
 }
 
 /**
+* Парсинг буфера
+*
+* В случае ошибки возвращается CDATA с сообщением об ошибке
+*/
+EasyTag TagParser::parse(void *buf, size_t buf_len)
+{
+	if ( parseXML(buf, buf_len, true) )
+	{
+		return tag;
+	}
+	
+	return error_tag(error);
+}
+
+/**
 * Парсинг файла
 *
 * В случае ошибки возвращается CDATA с сообщением об ошибке

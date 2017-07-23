@@ -135,7 +135,7 @@ public:
 	 * @param isFinal TRUE - последний кусок, FALSE - будет продолжение
 	 * @return TRUE - успешно, FALSE - ошибка парсинга
 	 */
-	bool parseXML(const char *data, size_t len, bool isFinal);
+	bool parseXML(const void *data, size_t len, bool isFinal);
 	
 };
 
