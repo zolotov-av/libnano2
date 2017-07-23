@@ -1,7 +1,7 @@
 #ifndef NANOSOFT_XMLPARSER_H
 #define NANOSOFT_XMLPARSER_H
 
-#include <nanosoft/xml_types.h>
+#include <nanosoft/easyrow.h>
 
 #include <expat.h>
 #include <string>
@@ -82,7 +82,7 @@ protected:
 	/**
 	 * Обработчик открытия тега
 	 */
-	virtual void onStartElement(const std::string &name, const attributes_t &attributes) = 0;
+	virtual void onStartElement(const std::string &name, const EasyRow &atts) = 0;
 	
 	/**
 	 * Обработчик символьных данных

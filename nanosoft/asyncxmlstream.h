@@ -3,6 +3,7 @@
 
 #include <nanosoft/asyncstream.h>
 #include <nanosoft/xmlparser.h>
+#include <nanosoft/easyrow.h>
 
 #include <errno.h>
 #include <unistd.h>
@@ -24,7 +25,7 @@ protected:
 	/**
 	* Обработчик открытия тега
 	*/
-	virtual void onStartElement(const std::string &name, const attributes_t &attributes) = 0;
+	virtual void onStartElement(const std::string &name, const EasyRow &atts) = 0;
 	
 	/**
 	* Обработчик символьных данных

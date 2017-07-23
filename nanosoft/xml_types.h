@@ -37,6 +37,17 @@ typedef std::list<ATXmlNode*> nodes_list_t;
 class attributes_t: public EasyRow
 {
 public:
+	
+	/**
+	 * Конструктор по умолчанию
+	 */
+	attributes_t() { }
+	
+	/**
+	 * Конструктор копий с EasyRow
+	 */
+	attributes_t(const EasyRow &row): EasyRow(row) { }
+	
 	/**
 	* Проверить существование атрибута
 	* @param name имя атрибута

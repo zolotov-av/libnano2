@@ -18,7 +18,7 @@ TagStream::~TagStream()
 /**
 * Обработчик открытия тега
 */
-void TagStream::onStartElement(const std::string &name, const attributes_t &atts)
+void TagStream::onStartElement(const std::string &name, const EasyRow &atts)
 {
 	depth ++;
 	switch ( depth )

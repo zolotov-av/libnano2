@@ -8,11 +8,11 @@ ATTagBuilder::~ATTagBuilder() {
 	
 }
 
-void ATTagBuilder::startElement(const std::string &name, const attributes_t &attributes, unsigned short int depth) {
+void ATTagBuilder::startElement(const std::string &name, const EasyRow &atts, int depth) {
 	if(stack.empty()) {
-		stack.push_back(new ATXmlTag(name, attributes, 0, depth));
+		stack.push_back(new ATXmlTag(name, atts, 0, depth));
 	} else {
-		stack.push_back(new ATXmlTag(name, attributes, stack.back(), depth));
+		stack.push_back(new ATXmlTag(name, atts, stack.back(), depth));
 	}
 }
 

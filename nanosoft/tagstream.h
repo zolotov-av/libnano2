@@ -15,6 +15,7 @@
 ****************************************************************************/
 
 #include <nanosoft/xmlparser.h>
+#include <nanosoft/easyrow.h>
 #include <nanosoft/easytag.h>
 
 class TagStream: public XMLParser
@@ -53,7 +54,7 @@ protected:
 	/**
 	 * Обработчик открытия тега
 	 */
-	virtual void onStartElement(const std::string &name, const attributes_t &atts);
+	virtual void onStartElement(const std::string &name, const EasyRow &atts);
 	
 	/**
 	 * Обработчик символьных данных
@@ -68,7 +69,7 @@ protected:
 	/**
 	 * Событие: начало потока
 	 */
-	virtual void onStartStream(const std::string &name, const attributes_t &attributes) = 0;
+	virtual void onStartStream(const std::string &name, const EasyRow &atts) = 0;
 	
 	/**
 	 * Событие: конец потока

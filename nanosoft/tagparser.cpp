@@ -81,7 +81,7 @@ EasyTag TagParser::parseString(const std::string &text)
 /**
 * Обработчик открытия тега
 */
-void TagParser::onStartElement(const std::string &name, const attributes_t &atts)
+void TagParser::onStartElement(const std::string &name, const EasyRow &atts)
 {
 	depth ++;
 	if ( depth == 1 )

@@ -6,6 +6,7 @@
 #include <nanosoft/xmlparser.h>
 #include <nanosoft/xml_types.h>
 #include <nanosoft/xml_tag.h>
+#include <nanosoft/easyrow.h>
 
 /**
 * Паресер XML-файлов
@@ -51,7 +52,7 @@ protected:
 	/**
 	* Обработчик открытия тега
 	*/
-	virtual void onStartElement(const std::string &name, const attributes_t &attributes);
+	virtual void onStartElement(const std::string &name, const EasyRow &atts);
 	
 	/**
 	* Обработчик символьных данных

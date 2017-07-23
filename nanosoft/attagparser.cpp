@@ -92,10 +92,10 @@ ATXmlTag * ATTagParser::parseString(const std::string &xml)
 /**
 * Обработчик открытия тега
 */
-void ATTagParser::onStartElement(const std::string &name, const attributes_t &attributes)
+void ATTagParser::onStartElement(const std::string &name, const EasyRow &atts)
 {
 	depth ++;
-	startElement(name, attributes, depth);
+	startElement(name, atts, depth);
 }
 
 /**

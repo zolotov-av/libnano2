@@ -15,6 +15,7 @@
 ****************************************************************************/
 
 #include <nanosoft/stream.h>
+#include <nanosoft/easyrow.h>
 #include <nanosoft/easytag.h>
 #include <nanosoft/xmlparser.h>
 
@@ -100,7 +101,7 @@ protected:
 	/**
 	 * Обработчик открытия тега
 	 */
-	virtual void onStartElement(const std::string &name, const attributes_t &atts);
+	virtual void onStartElement(const std::string &name, const EasyRow &atts);
 	
 	/**
 	 * Обработчик символьных данных

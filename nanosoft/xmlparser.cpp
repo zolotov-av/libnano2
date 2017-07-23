@@ -27,7 +27,7 @@ XMLParser::~XMLParser()
 */
 void XMLParser::startElementCallback(void *user_data, const XML_Char *name, const XML_Char **atts)
 {
-	attributes_t attributes;
+	EasyRow attributes;
 	
 	for(int i = 0; atts[i]; i += 2)
 	{
