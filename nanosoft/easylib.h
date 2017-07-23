@@ -3,8 +3,8 @@
 
 #include <list>
 #include <string>
-#include <nanosoft/easyvector.h>
 #include <nanosoft/easyrow.h>
+#include <nanosoft/easylist.h>
 
 #define cstr(s) s.c_str()
 
@@ -24,36 +24,36 @@ EasyRow easyEnviron();
 
 /**
  * Распарсить команду, представленную в виде строки, в
- * набор аргументов EasyVector.
+ * набор аргументов EasyList.
  * 
  * @param args выходной набор аргументов  
  */
-void parseCmdString(const std::string cmd, EasyVector& args);
+void parseCmdString(const std::string cmd, EasyList& args);
 
 /**
  * Вызов exec()
  */
-int easyExec(const std::string &filename, EasyVector args, char **envp);
+int easyExec(const std::string &filename, EasyList args, char **envp);
 
 /**
  * Вызов exec()
  *
  * переменные окружения наследуются из текущегое процесса, из переменной environ
  */
-int easyExec(const std::string &filename, EasyVector args);
+int easyExec(const std::string &filename, EasyList args);
 
 /**
  * Вызов exec()
  *
  * Переменные окружения задаются в виде списка строк вида "KEY=value"
  */
-int easyExec(const std::string &filename, EasyVector args, EasyVector env);
+int easyExec(const std::string &filename, EasyList args, EasyList env);
 
 /**
  * Вызов exec()
  *
  * Переменные окружения задаются в виде ассоциативного массива
  */
-int easyExec(const std::string &filename, EasyVector args, EasyRow env);
+int easyExec(const std::string &filename, EasyList args, EasyRow env);
 
 #endif // EASYLIB_H

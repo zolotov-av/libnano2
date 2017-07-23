@@ -40,7 +40,7 @@ pid_t ProcessManager::fork(exit_callback_t callback, ptr<Object> data)
 * Функция callback будет автоматически вызвана при его завершении
 * data — указатель на пользовательские данные
 */
-pid_t ProcessManager::exec(std::string path, const EasyVector &args, const EasyRow & env, exit_callback_t callback, ptr<Object> data)
+pid_t ProcessManager::exec(std::string path, const EasyList &args, const EasyRow & env, exit_callback_t callback, ptr<Object> data)
 {
 	pid_t pid = this->fork(callback, data);
 	if ( pid == 0 )

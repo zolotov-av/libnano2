@@ -1,7 +1,6 @@
 
-#include <nanosoft/easylib.h>
 #include <nanosoft/easymysql.h>
-#include <nanosoft/easyvector.h>
+#include <nanosoft/easylib.h>
 
 #include <cstdio>
 #include <cstring>

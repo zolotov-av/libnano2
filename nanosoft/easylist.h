@@ -122,6 +122,11 @@ public:
 	void set(int pos, const std::string &value);
 	
 	/**
+	 * Добавить строку в конец списка
+	 */
+	void append(const std::string &value);
+	
+	/**
 	 * Возвращает число строк в списке
 	 */
 	inline int size() const { return ref->size(); }

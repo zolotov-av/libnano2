@@ -3,6 +3,7 @@
 
 #include <nanosoft/object.h>
 #include <nanosoft/easylib.h>
+#include <nanosoft/easylist.h>
 
 #include <string>
 
@@ -107,7 +108,7 @@ public:
 	 * Функция callback будет автоматически вызвана при его завершении
 	 * data — указатель на пользовательские данные
 	 */
-	pid_t exec(std::string path, const EasyVector &args, const EasyRow & env, exit_callback_t callback, ptr<Object> data);
+	pid_t exec(std::string path, const EasyList &args, const EasyRow & env, exit_callback_t callback, ptr<Object> data);
 	
 	/**
 	 * Добавить существующий процесс в мониторинг

@@ -115,6 +115,14 @@ void EasyList::set(int pos, const std::string &value)
 }
 
 /**
+* Добавить строку в конец списка
+*/
+void EasyList::append(const std::string &value)
+{
+	ref->push_back(value);
+}
+
+/**
 * Установить размер списка
 */
 void EasyList::resize(int size)

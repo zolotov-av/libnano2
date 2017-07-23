@@ -56,13 +56,13 @@ EasyRow easyEnviron()
 
 /**
  * Распарсить команду, представленную в виде строки, в
- * набор аргументов EasyVector.
+ * набор аргументов EasyList.
  * 
  * TODO штука недотестирована, но для работы виртуалок должно хватить.
  * 
  * @param args выходной набор аргументов  
  */
-void parseCmdString(const std::string cmd, EasyVector& args)
+void parseCmdString(const std::string cmd, EasyList& args)
 {
 	std::size_t pos = 0;
 	bool open = false;
@@ -112,7 +112,7 @@ void parseCmdString(const std::string cmd, EasyVector& args)
 	args.append(arg);
 }
 
-int easyExec(const std::string &filename, EasyVector args, char **envp)
+int easyExec(const std::string &filename, EasyList args, char **envp)
 {
 	typedef char * const *argv_t;
 	
@@ -134,7 +134,7 @@ int easyExec(const std::string &filename, EasyVector args, char **envp)
 *
 * переменные окружения наследуются из текущегое процесса, из переменной environ
 */
-int easyExec(const std::string &filename, EasyVector args)
+int easyExec(const std::string &filename, EasyList args)
 {
 	return easyExec(filename, args, environ);
 }
@@ -144,7 +144,7 @@ int easyExec(const std::string &filename, EasyVector args)
 *
 * Переменные окружения задаются в виде списка строк вида "KEY=value"
 */
-int easyExec(const std::string &filename, EasyVector args, EasyVector env)
+int easyExec(const std::string &filename, EasyList args, EasyList env)
 {
 	char **envp;
 	
@@ -165,9 +165,9 @@ int easyExec(const std::string &filename, EasyVector args, EasyVector env)
 *
 * Переменные окружения задаются в виде ассоциативного массива
 */
-int easyExec(const std::string &filename, EasyVector args, EasyRow env)
+int easyExec(const std::string &filename, EasyList args, EasyRow env)
 {
-	EasyVector e;
+	EasyList e;
 	for(EasyRow::const_iterator it = env.begin(); it != env.end(); ++it)
 	{
 		e.append(it->first + "=" + it->second);
