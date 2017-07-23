@@ -86,6 +86,21 @@ public:
 	~EasyTag();
 	
 	/**
+	 * Вернуть тип узла
+	 */
+	int type() const { return tag->type; }
+	
+	/**
+	 * Проверить является узел тегом
+	 */
+	int isTag() const { return tag->type == EASYNODE_TAG; }
+	
+	/**
+	 * Проверить является узел блоком CDATA
+	 */
+	int isText() const { return tag->type == EASYNODE_CDATA; }
+	
+	/**
 	 * Вернуть имя тега
 	 */
 	std::string name() const { return tag->name; }
