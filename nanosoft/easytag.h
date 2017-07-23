@@ -205,6 +205,11 @@ public:
 	void append(EasyTag tree);
 	
 	/**
+	 * Создать копию дерева
+	 */
+	EasyTag copy() const { return EasyNode::copy(tag); }
+	
+	/**
 	 * Индексный оператор
 	 *
 	 * Ищет первый тег по указанному пути, если каких-то промежуточных узлов
